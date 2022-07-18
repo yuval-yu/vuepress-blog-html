@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>深入理解BIO、NIO、AIO线程模型 | 余瑜的博客</title>
+    <meta name="generator" content="VuePress 1.8.0">
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/yuyujson/cdn-images@latest/blog-images/20210214155749.jpg">
+    <meta name="description" content="积一时之跬步,臻千里之遥程">
+    <meta name="keywords" content="java博客,博客,java,git,github,markdown">
+    <meta name="baidu-site-verification" content="7F55weZDDc">
+    <meta name="theme-color" content="#11a8cd">
+    
+    <link rel="preload" href="/assets/css/0.styles.6a96f710.css" as="style"><link rel="preload" href="/assets/js/app.b59d43b0.js" as="script"><link rel="preload" href="/assets/js/2.32a5b7d0.js" as="script"><link rel="preload" href="/assets/js/43.b9fcdfcb.js" as="script"><link rel="prefetch" href="/assets/js/10.78e68451.js"><link rel="prefetch" href="/assets/js/11.e109c3f5.js"><link rel="prefetch" href="/assets/js/12.6dce10b5.js"><link rel="prefetch" href="/assets/js/13.7fd8ed7d.js"><link rel="prefetch" href="/assets/js/14.27ab1f10.js"><link rel="prefetch" href="/assets/js/15.3cd3f218.js"><link rel="prefetch" href="/assets/js/16.cfadd324.js"><link rel="prefetch" href="/assets/js/17.519041ce.js"><link rel="prefetch" href="/assets/js/18.ed7e71f0.js"><link rel="prefetch" href="/assets/js/19.230facb8.js"><link rel="prefetch" href="/assets/js/20.6ef8123b.js"><link rel="prefetch" href="/assets/js/21.fb782380.js"><link rel="prefetch" href="/assets/js/22.cb6efb4d.js"><link rel="prefetch" href="/assets/js/23.15e01100.js"><link rel="prefetch" href="/assets/js/24.6d671eae.js"><link rel="prefetch" href="/assets/js/25.e8104fe5.js"><link rel="prefetch" href="/assets/js/26.14b8d08f.js"><link rel="prefetch" href="/assets/js/27.0f4ea0f3.js"><link rel="prefetch" href="/assets/js/28.1657c022.js"><link rel="prefetch" href="/assets/js/29.be912580.js"><link rel="prefetch" href="/assets/js/3.d5a86a18.js"><link rel="prefetch" href="/assets/js/30.508ee957.js"><link rel="prefetch" href="/assets/js/31.b82f4173.js"><link rel="prefetch" href="/assets/js/32.d3049547.js"><link rel="prefetch" href="/assets/js/33.07708f42.js"><link rel="prefetch" href="/assets/js/34.aec051bb.js"><link rel="prefetch" href="/assets/js/35.dd49be3f.js"><link rel="prefetch" href="/assets/js/36.9fd03482.js"><link rel="prefetch" href="/assets/js/37.330d8bb4.js"><link rel="prefetch" href="/assets/js/38.6b6ff415.js"><link rel="prefetch" href="/assets/js/39.0fe6da40.js"><link rel="prefetch" href="/assets/js/4.fee53103.js"><link rel="prefetch" href="/assets/js/40.e73843d6.js"><link rel="prefetch" href="/assets/js/41.2f93e056.js"><link rel="prefetch" href="/assets/js/42.947ed580.js"><link rel="prefetch" href="/assets/js/44.ac650c37.js"><link rel="prefetch" href="/assets/js/45.28dca716.js"><link rel="prefetch" href="/assets/js/46.c6d9149f.js"><link rel="prefetch" href="/assets/js/47.48f5d292.js"><link rel="prefetch" href="/assets/js/48.b8c9e035.js"><link rel="prefetch" href="/assets/js/49.0befbcdf.js"><link rel="prefetch" href="/assets/js/5.324acea3.js"><link rel="prefetch" href="/assets/js/50.7367c1df.js"><link rel="prefetch" href="/assets/js/51.83626ff9.js"><link rel="prefetch" href="/assets/js/52.89e08b1a.js"><link rel="prefetch" href="/assets/js/53.6e2cb993.js"><link rel="prefetch" href="/assets/js/54.46e1b57f.js"><link rel="prefetch" href="/assets/js/55.f21c86df.js"><link rel="prefetch" href="/assets/js/56.763e66bb.js"><link rel="prefetch" href="/assets/js/57.0c234d89.js"><link rel="prefetch" href="/assets/js/58.ddaed26a.js"><link rel="prefetch" href="/assets/js/59.abbe33db.js"><link rel="prefetch" href="/assets/js/6.1e564d54.js"><link rel="prefetch" href="/assets/js/60.41cc8f36.js"><link rel="prefetch" href="/assets/js/61.b5c08d00.js"><link rel="prefetch" href="/assets/js/62.5af6c4cf.js"><link rel="prefetch" href="/assets/js/63.b3be483a.js"><link rel="prefetch" href="/assets/js/64.e01f7670.js"><link rel="prefetch" href="/assets/js/65.a5aa4815.js"><link rel="prefetch" href="/assets/js/66.32256b09.js"><link rel="prefetch" href="/assets/js/67.308d2b42.js"><link rel="prefetch" href="/assets/js/68.81b8b810.js"><link rel="prefetch" href="/assets/js/69.d030989a.js"><link rel="prefetch" href="/assets/js/7.d371c4f7.js"><link rel="prefetch" href="/assets/js/70.f54ab2ed.js"><link rel="prefetch" href="/assets/js/71.85b10eee.js"><link rel="prefetch" href="/assets/js/72.cf4f2aef.js"><link rel="prefetch" href="/assets/js/73.73d34157.js"><link rel="prefetch" href="/assets/js/74.97bc1098.js"><link rel="prefetch" href="/assets/js/75.ae99cbb1.js"><link rel="prefetch" href="/assets/js/76.eeb239c8.js"><link rel="prefetch" href="/assets/js/77.4e615b08.js"><link rel="prefetch" href="/assets/js/78.cb55387f.js"><link rel="prefetch" href="/assets/js/79.6818a8b2.js"><link rel="prefetch" href="/assets/js/8.7a6d3673.js"><link rel="prefetch" href="/assets/js/80.6d3783f0.js"><link rel="prefetch" href="/assets/js/81.405315c1.js"><link rel="prefetch" href="/assets/js/82.8e172c6a.js"><link rel="prefetch" href="/assets/js/83.8d9783d9.js"><link rel="prefetch" href="/assets/js/84.b11be9ee.js"><link rel="prefetch" href="/assets/js/85.acb3c44e.js"><link rel="prefetch" href="/assets/js/86.74348774.js"><link rel="prefetch" href="/assets/js/87.046d24dc.js"><link rel="prefetch" href="/assets/js/88.04bcb05d.js"><link rel="prefetch" href="/assets/js/89.08fc0a34.js"><link rel="prefetch" href="/assets/js/9.0a2edccd.js"><link rel="prefetch" href="/assets/js/90.567b128d.js"><link rel="prefetch" href="/assets/js/91.80e197c3.js"><link rel="prefetch" href="/assets/js/92.6d99ef37.js"><link rel="prefetch" href="/assets/js/93.e83349b4.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.6a96f710.css">
+  </head>
+  <body class="theme-mode-light">
+    <div id="app" data-server-rendered="true"><div class="theme-container sidebar-open have-rightmenu have-body-img"><header class="navbar blur"><div title="目录" class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="https://cdn.jsdelivr.net/gh/yuyujson/cdn-images@latest/blog-images/20210216171303.svg" alt="余瑜的博客" class="logo"> <span class="site-name can-hide">余瑜的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">首页</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="JAVA" class="dropdown-title"><a href="/pages/224f8e/" class="link-title">JAVA</a> <span class="title" style="display:none;">JAVA</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/pages/224f8e/" class="nav-link">并发</a></li><li class="dropdown-item"><!----> <a href="/pages/878afc/" class="nav-link">线程池</a></li><li class="dropdown-item"><!----> <a href="/pages/5d39a7/" class="nav-link">spring</a></li><li class="dropdown-item"><!----> <a href="/pages/511867/" class="nav-link">maven</a></li><li class="dropdown-item"><!----> <a href="/pages/2cabac/" class="nav-link">其他</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="数据库" class="dropdown-title"><a href="/pages/88ba01/" class="link-title">数据库</a> <span class="title" style="display:none;">数据库</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/pages/88ba01/" class="nav-link">redis</a></li><li class="dropdown-item"><!----> <a href="/pages/e3d657/" class="nav-link">mysql</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="运维" class="dropdown-title"><a href="/pages/c0a252/" class="link-title">运维</a> <span class="title" style="display:none;">运维</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/pages/c0a252/" class="nav-link">linux</a></li><li class="dropdown-item"><!----> <a href="/pages/2a2df0/" class="nav-link">zookeeper</a></li><li class="dropdown-item"><!----> <a href="/pages/54315c/" class="nav-link">docker</a></li><li class="dropdown-item"><!----> <a href="/pages/7516d4/" class="nav-link">terminal</a></li><li class="dropdown-item"><!----> <a href="/pages/4ceec8/" class="nav-link">kong插件开发</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="算法" class="dropdown-title"><a href="/pages/cad352/" class="link-title">算法</a> <span class="title" style="display:none;">算法</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/pages/cad352/" class="nav-link">资料</a></li><li class="dropdown-item"><!----> <a href="/pages/877b28/" class="nav-link">leetCode-简单</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="更多" class="dropdown-title"><a href="/pages/c33358/" class="link-title">更多</a> <span class="title" style="display:none;">更多</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/pages/c33358/" class="nav-link">blog</a></li><li class="dropdown-item"><!----> <a href="/pages/91e143/" class="nav-link">其他</a></li></ul></div></div><div class="nav-item"><a href="/pages/44ff0f/" class="nav-link">关于</a></div> <a href="https://github.com/yuyujson" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar-hover-trigger"></div> <aside class="sidebar" style="display:none;"><!----> <nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">首页</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="JAVA" class="dropdown-title"><a href="/pages/224f8e/" class="link-title">JAVA</a> <span class="title" style="display:none;">JAVA</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/pages/224f8e/" class="nav-link">并发</a></li><li class="dropdown-item"><!----> <a href="/pages/878afc/" class="nav-link">线程池</a></li><li class="dropdown-item"><!----> <a href="/pages/5d39a7/" class="nav-link">spring</a></li><li class="dropdown-item"><!----> <a href="/pages/511867/" class="nav-link">maven</a></li><li class="dropdown-item"><!----> <a href="/pages/2cabac/" class="nav-link">其他</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="数据库" class="dropdown-title"><a href="/pages/88ba01/" class="link-title">数据库</a> <span class="title" style="display:none;">数据库</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/pages/88ba01/" class="nav-link">redis</a></li><li class="dropdown-item"><!----> <a href="/pages/e3d657/" class="nav-link">mysql</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="运维" class="dropdown-title"><a href="/pages/c0a252/" class="link-title">运维</a> <span class="title" style="display:none;">运维</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/pages/c0a252/" class="nav-link">linux</a></li><li class="dropdown-item"><!----> <a href="/pages/2a2df0/" class="nav-link">zookeeper</a></li><li class="dropdown-item"><!----> <a href="/pages/54315c/" class="nav-link">docker</a></li><li class="dropdown-item"><!----> <a href="/pages/7516d4/" class="nav-link">terminal</a></li><li class="dropdown-item"><!----> <a href="/pages/4ceec8/" class="nav-link">kong插件开发</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="算法" class="dropdown-title"><a href="/pages/cad352/" class="link-title">算法</a> <span class="title" style="display:none;">算法</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/pages/cad352/" class="nav-link">资料</a></li><li class="dropdown-item"><!----> <a href="/pages/877b28/" class="nav-link">leetCode-简单</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="更多" class="dropdown-title"><a href="/pages/c33358/" class="link-title">更多</a> <span class="title" style="display:none;">更多</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/pages/c33358/" class="nav-link">blog</a></li><li class="dropdown-item"><!----> <a href="/pages/91e143/" class="nav-link">其他</a></li></ul></div></div><div class="nav-item"><a href="/pages/44ff0f/" class="nav-link">关于</a></div> <a href="https://github.com/yuyujson" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>并发</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>线程池</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>spring</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>maven</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>其他</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/pages/2cabac/" class="sidebar-link">io流</a></li><li><a href="/pages/86937d/" class="sidebar-link">innoDB存储引擎</a></li><li><a href="/pages/b0015d/" class="sidebar-link">并发4:懒汉模式与枚举模式</a></li><li><a href="/pages/3e3361/" class="sidebar-link">自定义redis锁注解</a></li><li><a href="/pages/31d9a6/" class="sidebar-link">自定义zkLock</a></li><li><a href="/pages/8ebd07/" class="sidebar-link">记一次去除Result处理</a></li><li><a href="/pages/331b9e/" class="sidebar-link">TCP粘包半包</a></li><li><a href="/pages/59ba3d/" class="sidebar-link">ELK统一日志解决方案</a></li><li><a href="/pages/ce4bc4/" aria-current="page" class="active sidebar-link">深入理解BIO、NIO、AIO线程模型</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header level2"><a href="/pages/ce4bc4/#bio" class="sidebar-link">BIO</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header level3"><a href="/pages/ce4bc4/#bio代码示例" class="sidebar-link">BIO代码示例</a></li></ul></li><li class="sidebar-sub-header level2"><a href="/pages/ce4bc4/#nio" class="sidebar-link">NIO</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header level3"><a href="/pages/ce4bc4/#select、poll模型" class="sidebar-link">select、poll模型</a></li><li class="sidebar-sub-header level3"><a href="/pages/ce4bc4/#epoll模型" class="sidebar-link">epoll模型</a></li><li class="sidebar-sub-header level3"><a href="/pages/ce4bc4/#深入hotpost源码分析epoll模型" class="sidebar-link">深入hotpost源码分析epoll模型</a></li><li class="sidebar-sub-header level3"><a href="/pages/ce4bc4/#nio与redis" class="sidebar-link">NIO与redis</a></li></ul></li></ul></li></ul></section></li></ul> </aside> <div><main class="page"><div class="theme-vdoing-wrapper "><div class="articleInfo-wrap" data-v-06225672><div class="articleInfo" data-v-06225672><ul class="breadcrumbs" data-v-06225672><li data-v-06225672><a href="/" title="首页" class="iconfont icon-home router-link-active" data-v-06225672></a></li> <li data-v-06225672><span data-v-06225672>JAVA</span></li><li data-v-06225672><span data-v-06225672>其他</span></li></ul> <div class="info" data-v-06225672><div title="作者" class="author iconfont icon-touxiang" data-v-06225672><a href="javascript:;" data-v-06225672>余瑜</a></div> <div title="创建时间" class="date iconfont icon-riqi" data-v-06225672><a href="javascript:;" data-v-06225672>2021-08-31</a></div> <!----></div></div></div> <!----> <div class="content-wrapper"><div class="right-menu-wrapper"><div class="right-menu-margin"><div class="right-menu-title">目录</div> <div class="right-menu-content"></div></div></div> <h1><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAABKFJREFUSA3tVl1oFVcQnrMbrak3QUgkya1akpJYcrUtIqW1JvFBE9LiQ5v6JmJpolbMg32rVrhgoYK0QiMY6i9Y6EMaW5D+xFJaTYItIuK2Kr3+BJNwkxBj05sQY3b3nM6cs2dv9t7NT/vQJw/sndk5M/PNzJkzewGerP+pAmy+ON8lLzUJgA8ZYxYIYZmGYRnctDaWvJJAmTtfP1pvXsBCCPP8QFcCaRkZYACgDZFO4stNIcBCajEOlmmC9XpJ9bAGCaPaPmzPl32dvLSVu3BWCTQs0XQQ6g0DYgwLIoAZbBCdW/i+781o1VVlm/410mw4h06Y7bIPHNyWDyL4FHkX03Q8SrzNhZTZriieckWt7cL6MM85YcLpsi/7O9/iXFT6MswI0DmmpkSaJ0qLxFIm3+i1THHB3zmBH3PYx9CcykcLOeQVVa7QtdxTgQgEleX2AjHYfwA+2ddV77ruGoJUbhGDI09YSNXyMpUt5ylOzxgbUmtOp7NmbNt8v3arjTBfYELmLUV+M+nSawNNAUqpT3ClJWg5I3BLT+cGW/DXNGCa6tx1aakCGEigArTn4TDIPdrXXYKCZNrHLMCOEPvHBlLQ99s9eHB7EB6NTki73CVPQ2F5MSx/uRQixfmq7rK0wYD8w8E905bnPDfwoWs/rfv93NWN/ZfvwsLIU7A09gxECyISeGJkHAau98L97tuw7NXnoPyNF8FcYGLGKsOs0mN3OEyec9esGW/ZEl945dTP34wlR2FZVQWU1q0Cw8Tr7p+hgLLNL0FPxx/Q35mA8aEUrH6nCgwEl0tn7wUiZYJnNRh6DK4UH/k0lfyrsBKdPVv/AriGIQcEDQZ65LBAGe2Rzui9Ybjz7XUppz1/uKBbyVPGkN3ZAeC6hr0x7Nr38N5+EqkoOm17xpoqR9ohQF55ERSvr4Dkr3chNfC3DMzGJlNBElW8w9nsGQvhNGIzDkXzCg8cLK951xHsFBlTJspJNi3ZFIMF2AeDV3q8DNOB+YHi6QTrChDIWDBRi5U5f+ZMfJLu3ccrqxtdxk4SKH336LFxSmkqefwU5T8fhdSdQf9IVKD6aNiwI/hnmcAZ91isYMJIaCUCx9W098+LgruikeTqzqqxKPUwqJyCPJiyemVVZBOijDGjD38Os0jOiSPL1z3SPjXNANbiNPXAdzTfukjjuknNBbyz3nwgTd3AVFqUJ5hpHlq9MveLnWwttUfoygBmvVjuikxND3znrhsELnZk7k+OjIGxeNEkomyLVta0xxn+HZhjBc4YZ/AFjHjz9u3xRZl2BN4aq9nFwWh16IrQ1aHHEd3j1+4/dB9OtH4e29A2H1DyHQRmOSfQZ1Fy7MHBTGB6J/Djq6p3OxyO2cB+4Car7v/o3GXgfAkj23+x9ID1Teoamo/SXcbvSf2PX7Vc8DdCmE1vN9di+32P9/5YR3vLnhCVGUWBjEkr3yh4H8v9CzmsbdhzOKzsJKM90iFdaTMjRPhGVsakRvOaRidljo6H6G7j+ctrJpsP+4COhDIl0La2+FS4+5mlocBaXY5QnGZysIBYoeSsl5qQzrSj/cgNrfuEzlWBfwA+EjrZyWUvpAAAAABJRU5ErkJggg==">深入理解BIO、NIO、AIO线程模型<!----></h1> <!----> <div class="theme-vdoing-content content__default"><p><a href="https://blog.51cto.com/u_15281317/3007764" target="_blank" rel="noopener noreferrer">深入理解BIO、NIO、AIO线程模型_柠檬不萌的技术博客_51CTO博客<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <blockquote><p>IO模型就是说用什么样的通道进行数据的发送和接收，首先要明确一点：<strong>IO是操作系统与其他网络进行数据交互，JDK底层并没有实现IO，而是对操作系统内核函数做的一个封装</strong>，IO代码进入底层其实都是native形式的。Java共支持3种网络编程IO模式：<strong>BIO，NIO，AIO</strong>。下文进行介绍</p></blockquote> <h2 id="bio"><a href="#bio" class="header-anchor">#</a> BIO</h2> <div class="language- line-numbers-mode"><pre class="language-text"><code>    BIO(Blocking IO) 又称同步阻塞IO，一个客户端由一个线程来进行处理，线程模型如下所示
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p><img src="https://cdn.jsdelivr.net/gh/yuyujson/cdn-images@latest/blog-images/202207151645411.png" alt="深入理解BIO、NIO、AIO线程模型_线程模型、netty"></p> <h3 id="bio代码示例"><a href="#bio代码示例" class="header-anchor">#</a> BIO代码示例</h3> <p>登录后复制</p> <div class="language-html line-numbers-mode"><pre class="language-html"><code>public class SocketServer {
+    public static void main(String[] args) throws IOException {
+        //创建socket连接，端口为9000
+        ServerSocket serverSocket = new ServerSocket(9000);
+        while (true) {
+            System.out.println(&quot;等待连接。。&quot;);
+            //阻塞方法
+            Socket clientSocket = serverSocket.accept();
+            System.out.println(&quot;有客户端连接了。。&quot;);
+
+            //单线程连接，性能不好，下面开启多线程
+            //handler(clientSocket);
+
+            //开启多线程
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        handler(clientSocket);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
+    }
+
+    private static void handler(Socket clientSocket) throws IOException {
+        byte[] bytes = new byte[1024];
+        System.out.println(&quot;准备read。。&quot;);
+        //接收客户端的数据，阻塞方法，没有数据可读时就阻塞
+        int read = clientSocket.getInputStream().read(bytes);
+        System.out.println(&quot;read完毕。。&quot;);
+        if (read != -1) {
+            System.out.println(&quot;接收到客户端的数据：&quot; + new String(bytes, 0, read));
+        }
+        clientSocket.getOutputStream().write(&quot;HelloClient&quot;.getBytes());
+        clientSocket.getOutputStream().flush();
+    }
+}
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br></div></div><p>上边是BIO连接的示例代码，启动后可以通过telnet与 localhost 9000 建立连接，并发送字符串信息123，测试结果如下：
+<img src="https://cdn.jsdelivr.net/gh/yuyujson/cdn-images@latest/blog-images/202207151646352.png" alt="深入理解BIO、NIO、AIO线程模型_线程模型、netty_02"> <img src="https://cdn.jsdelivr.net/gh/yuyujson/cdn-images@latest/blog-images/202207151646067.png" alt="深入理解BIO、NIO、AIO线程模型_线程模型、netty_03">
+测试成功，但BIO现在已经用的不多了，因为它在<strong>大并发下</strong>有几个致命的缺点：</p> <ol><li>如果BIO使用单线程接受连接，则会阻塞其他连接，效率较低。</li> <li>如果使用多线程虽然减弱了单线程带来的影响，但当有大并发进来时，会导致服务器线程太多，压力太大而崩溃。</li> <li>就算使用线程池，也只能同时允许有限个数的线程进行连接，如果并发量远大于线程池设置的数量，还是与单线程无异</li> <li>IO代码里read操作是阻塞操作，如果连接不做数据读写操作会导致线程阻塞，就是说只占用连接，不发送数据，则会浪费资源。比如线程池中500个连接，只有100个是频繁读写的连接，其他占着茅坑不拉屎，浪费资源！</li> <li>另外多线程也会有线程切换带来的消耗</li></ol> <p>综上所述，<strong>BIO方式已经不适用于如下的大并发场景，仅适用于连接数目比较小且固定的架构</strong>。这种方式对服务器资源要求比较高，但BIO程序简单易理解。</p> <h2 id="nio"><a href="#nio" class="header-anchor">#</a> NIO</h2> <div class="language- line-numbers-mode"><pre class="language-text"><code>    为了解决BIO在大并发下存在的问题，诞生了NIO。NIO(Non Blocking IO)又称同步非阻塞IO。服务器实现模式为把多个连接(请求)放入集合中，只用一个线程可以处理多个请求(连接)，也就是**多路复用**。JDK1.4开始引入。
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>NIO的同步非阻塞体现在：</p> <ol><li><p><strong>同步</strong>：调用的结果会在本次调用后返回，不存在异步线程回调之类的。</p></li> <li><p><strong>非阻塞</strong>：表现为线程不会一直在等待，把连接加入集合后，线程会一直轮询集合中的连接，有则处理，无则继续接受请求。</p> <div class="language- extra-class"><pre><code>**NIO的多路复用底层主要用的是Linux 内核函数（select，poll，epoll）来实现的**。windows不支持epoll实现，windows底层是基于winsock2的select函数实现的(不开源)。三种内核模型的区别如下所示！
+</code></pre></div></li></ol> <table><thead><tr><th></th> <th>select</th> <th>poll</th> <th>epoll(jdk 1.5及以上)</th></tr></thead> <tbody><tr><td>操作方式</td> <td>遍历</td> <td>遍历</td> <td>回调</td></tr> <tr><td>底层实现数组</td> <td>数组</td> <td>链表</td> <td>哈希表</td></tr> <tr><td>IO效率</td> <td>每次调用都进行线性遍历，时间复杂度为O(n)</td> <td>每次调用都进行线性遍历，时间复杂度为O(n)</td> <td>事件通知方式，每当有IO事件就绪，系统注册的回调函数就会被调用，时间复杂度O(1)</td></tr> <tr><td>最大连接</td> <td>有上限（1024个）</td> <td>无上限</td> <td>无上限</td></tr></tbody></table> <p><strong>NIO 有三大核心组件：</strong></p> <ol><li><strong>Buffer(缓冲区)</strong>：buffer 底层就是个数组</li> <li><strong>Channel(通道)</strong>：channel 类似于流，每个 channel 对应一个 buffer缓冲区</li> <li><strong>Selector(多路复用器)</strong>：channel 会注册到 selector 上，由 selector 根据 channel 读写事件的发生将其交由某个空闲的线程处理</li></ol> <p>注意：NIO 的 Buffer 和 channel 都是既可以读也可以写，NIO的多路复用示意图如下：
+<img src="https://cdn.jsdelivr.net/gh/yuyujson/cdn-images@latest/blog-images/202207151646830.png" alt="深入理解BIO、NIO、AIO线程模型_线程模型、netty_04"></p> <p><strong>应用场景：</strong>
+NIO方式适用于连接数目多且连接比较短（轻操作） 的架构， 比如聊天服务器， 弹幕系统， 服务器间通讯，编程比较复杂</p> <h3 id="select、poll模型"><a href="#select、poll模型" class="header-anchor">#</a> select、poll模型</h3> <div class="language- line-numbers-mode"><pre class="language-text"><code>    NIO底层在JDK1.4版本是用linux的内核函数select()或poll()来实现，selector每次都会轮询所有的sockchannel看下哪个channel有读写事件，有的话就处理，没有就继续遍历，select和poll模型作为NIO的早期实现，存在一定弊端。下面是一段代码，简单表述一下他们的弊端！
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>第一个版本：<strong>NIO的早期版本模拟代码实现（select、poll）</strong></p> <p>登录后复制</p> <div class="language-html line-numbers-mode"><pre class="language-html"><code>public class NioServer {
+
+    // 保存客户端连接
+    static List<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>SocketChannel</span><span class="token punctuation">&gt;</span></span> channelList = new ArrayList&lt;&gt;();
+
+    public static void main(String[] args) throws IOException, InterruptedException {
+
+        // 创建NIO ServerSocketChannel,与BIO的serverSocket类似
+        ServerSocketChannel serverSocket = ServerSocketChannel.open();
+        serverSocket.socket().bind(new InetSocketAddress(9000));
+
+        // 设置ServerSocketChannel为非阻塞, 配置为true，则和BIO类似
+        serverSocket.configureBlocking(false);
+        System.out.println(&quot;服务启动成功&quot;);
+
+        while (true) {
+            // 非阻塞模式accept方法不会阻塞，否则会阻塞
+            // NIO的非阻塞是由操作系统内部实现的，底层调用了linux内核的accept函数
+            SocketChannel socketChannel = serverSocket.accept();
+
+            if (socketChannel != null) { // 如果有客户端进行连接
+                System.out.println(&quot;连接成功&quot;);
+                // 设置SocketChannel为非阻塞
+                socketChannel.configureBlocking(false);
+                // 保存客户端连接在List中
+                channelList.add(socketChannel);
+            }
+
+            // 遍历连接进行数据读取
+            Iterator<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>SocketChannel</span><span class="token punctuation">&gt;</span></span> iterator = channelList.iterator();
+
+            while (iterator.hasNext()) {
+                SocketChannel sc = iterator.next();
+                ByteBuffer byteBuffer = ByteBuffer.allocate(128);
+                // 非阻塞模式read方法不会阻塞，否则会阻塞
+                int len = sc.read(byteBuffer);
+                // 如果有数据，把数据打印出来
+                if (len &gt; 0) {
+                    System.out.println(&quot;接收到消息：&quot; + new String(byteBuffer.array()));
+                } else if (len == -1) { // 如果客户端断开，把socket从集合中去掉
+                    iterator.remove();
+                    System.out.println(&quot;客户端断开连接&quot;);
+                }
+            }
+        }
+    }
+}
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br></div></div><p>从上述代码可以看到，NIO使用一个mian线程 + 一个数组 解决了BIO的痛点。具体解决方式如下</p> <ol><li>首先设置服务端连接的阻塞方式为false，代表非阻塞方式</li> <li>非阻塞式接受客户端连接，意味着这段代码一直在轮询的跑，不会阻塞。</li> <li>如果有客户端连接进来，就把这个连接放入list集合中</li> <li>后续遍历list集合，使用非阻塞式读取数据</li> <li>读取完成再次轮询跑代码</li></ol> <p>测试如下：
+<img src="https://cdn.jsdelivr.net/gh/yuyujson/cdn-images@latest/blog-images/202207151646497.png" alt="深入理解BIO、NIO、AIO线程模型_线程模型、netty_05"></p> <div class="language- line-numbers-mode"><pre class="language-text"><code>    这种方式虽然解决了BIO的部分痛点，但并不是很完美。**因为select和poll模型的底层实现、io效率、最大连接数在面对高并发时还存在一定弊端！他们的多路复用采用的是遍历Selector中所有的连接，然后对有事件的连接做出响应。** 假如连接数太多，有10000个连接，其中只有1000个连接有写数据，但是由于其他9000个连接并没有断开，我们还是要每次轮询遍历一万次，其中有十分之九的遍历都是无效的，这显然不是一个让人很满意的状态。**为了处理无效遍历的问题，在jdk1.5及以上版本引入了epoll模型**
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h3 id="epoll模型"><a href="#epoll模型" class="header-anchor">#</a> epoll模型</h3> <div class="language- line-numbers-mode"><pre class="language-text"><code>    **JDK1.5开始引入了epoll基于事件响应机制来优化NIO**。epoll模型解决了elect和poll模型的无效遍历问题，是NIO的核心。epool是基于事件响应的，类似于观察者模式！
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>NIO第二个版本：<strong>使用epoll模型</strong>后的代码示例</p> <p>登录后复制</p> <div class="language-html line-numbers-mode"><pre class="language-html"><code>public class NioSelectorServer {
+
+    public static void main(String[] args) throws IOException, InterruptedException {
+
+        // 创建NIO ServerSocketChannel
+        ServerSocketChannel serverSocket = ServerSocketChannel.open();
+        serverSocket.socket().bind(new InetSocketAddress(9000));
+        // 设置ServerSocketChannel为非阻塞
+        serverSocket.configureBlocking(false);
+        // 打开Selector处理Channel，即创建epoll
+        Selector selector = Selector.open();
+        // 把ServerSocketChannel注册到selector上，并且selector对客户端accept连接操作感兴趣
+        serverSocket.register(selector, SelectionKey.OP_ACCEPT);
+        System.out.println(&quot;服务启动成功&quot;);
+
+        while (true) {
+            // 阻塞等待需要处理的事件发生
+            selector.select();
+
+            // 获取selector中注册的全部事件的 SelectionKey 实例
+            Set<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>SelectionKey</span><span class="token punctuation">&gt;</span></span> selectionKeys = selector.selectedKeys();
+            Iterator<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>SelectionKey</span><span class="token punctuation">&gt;</span></span> iterator = selectionKeys.iterator();
+
+            // 遍历SelectionKey对事件进行处理
+            while (iterator.hasNext()) {
+                SelectionKey key = iterator.next();
+                // 如果是OP_ACCEPT事件，则进行连接获取和事件注册
+                if (key.isAcceptable()) {
+                    ServerSocketChannel server = (ServerSocketChannel) key.channel();
+                    SocketChannel socketChannel = server.accept();
+                    socketChannel.configureBlocking(false);
+                    // 这里只注册了读事件，如果需要给客户端发送数据可以注册写事件
+                    socketChannel.register(selector, SelectionKey.OP_READ);
+                    System.out.println(&quot;客户端连接成功&quot;);
+                } else if (key.isReadable()) {  // 如果是OP_READ事件，则进行读取和打印
+                    SocketChannel socketChannel = (SocketChannel) key.channel();
+                    ByteBuffer byteBuffer = ByteBuffer.allocate(128);
+                    int len = socketChannel.read(byteBuffer);
+                    // 如果有数据，把数据打印出来
+                    if (len &gt; 0) {
+                        System.out.println(&quot;接收到消息：&quot; + new String(byteBuffer.array()));
+                    } else if (len == -1) { // 如果客户端断开连接，关闭Socket
+                        System.out.println(&quot;客户端断开连接&quot;);
+                        socketChannel.close();
+                    }
+                }
+                //从事件集合里删除本次处理的key，防止下次select重复处理
+                iterator.remove();
+            }
+        }
+    }
+}
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code>    在使用epoll模型之后，对简单版本的NIO做了优化处理，可以理解为在第一个版本的NIO上，又增加了一个就绪事件列表集合，这个集合中存放着有事件响应的连接，然后开启一个线程去监听这个集合，有元素的话就进行处理。
+
+    总结：NIO整个调用流程就是Java调用了操作系统的内核函数来创建Socket，获取到Socket的文件描述符，再创建一个Selector对象，对应操作系统的Epoll描述符，将获取到的Socket连接的文件描述符的事件绑定到Selector对应的Epoll文件描述符上，进行事件的异步通知，这样就**实现了使用一条线程，并且不需要太多的无效的遍历，将事件处理交给了操作系统内核(操作系统硬中断程序实现)，大大提高了效率。**
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><h3 id="深入hotpost源码分析epoll模型"><a href="#深入hotpost源码分析epoll模型" class="header-anchor">#</a> 深入hotpost源码分析epoll模型</h3> <div class="language- line-numbers-mode"><pre class="language-text"><code>    NIO第二个版本的代码中，与简单版本最主要的代码区别在以下三行代码
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>登录后复制</p> <div class="language-html line-numbers-mode"><pre class="language-html"><code>// 1. 打开Selector处理Channel，即创建epoll ，创建多路复用器
+Selector selector = Selector.open();
+
+// 2. 把ServerSocketChannel链接注册到selector多路复用器上，并且selector对客户端accept连接操作感兴趣
+serverSocket.register(selector, SelectionKey.OP_ACCEPT);
+
+// 3. 阻塞等待需要处理的事件发生
+selector.select();
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br></div></div><p>这三行代码内部是优化的核心，下面一一介绍！</p> <p><strong>2.3.1. Selector selector = Selector.open();</strong></p> <p>登录后复制</p> <div class="language-html line-numbers-mode"><pre class="language-html"><code>    public static Selector open() throws IOException {
+        return SelectorProvider.provider().openSelector();
+    }
+
+ ========================= SelectorProvider.provider() =======================
+
+    public static SelectorProvider provider() {
+        synchronized (lock) {
+            if (provider != null)
+                return provider;
+            return AccessController.doPrivileged(
+                new PrivilegedAction<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>SelectorProvider</span><span class="token punctuation">&gt;</span></span>() {
+                    public SelectorProvider run() {
+                            if (loadProviderFromProperty())
+                                return provider;
+                            if (loadProviderAsService())
+                                return provider;
+                            // 我们在Windows环境下，默认创建的是WindowsSelectorProvider，如下所示
+                            provider = sun.nio.ch.DefaultSelectorProvider.create();
+                            return provider;
+                        }
+                    });
+        }
+    }
+
+======================= 默认创建的是WindowsSelectorProvider =======================
+	  public static SelectorProvider create() {
+	        return new WindowsSelectorProvider();
+	    }
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br></div></div><p>​		进入open方法源码中，可以看到创建的是WindowsSelectorProvider，而<strong>项目发布一般都是在linux上，所以需要进入hotport源码中看一下Linux平台的实现。这中现象也是JVM的跨平台性的体现</strong>。进入hotpost源码发现如果是linux环境，则创建<strong>EpollSelectorProvider</strong>。也发现Linux上实现是基于Epoll模型！</p> <p><img src="https://cdn.jsdelivr.net/gh/yuyujson/cdn-images@latest/blog-images/202207151648366.png" alt="深入理解BIO、NIO、AIO线程模型_线程模型、netty_06"></p> <p>所以 SelectorProvider.provider().openSelector() 其实是EpollSelectorProvider.openSelector(),代码如下所示！</p> <p><img src="https://cdn.jsdelivr.net/gh/yuyujson/cdn-images@latest/blog-images/202207151646955.png" alt="深入理解BIO、NIO、AIO线程模型_线程模型、netty_07">
+可以看到 <strong>EPollSelectorImpl</strong> 是具体的实现，那么在EPollSelectorImpl实例化时做了什么事情呢？
+<img src="https://cdn.jsdelivr.net/gh/yuyujson/cdn-images@latest/blog-images/202207151646099.png" alt="深入理解BIO、NIO、AIO线程模型_线程模型、netty_08">
+在这个 EPollArray 包装类中调用了一个 <strong>epoll_create</strong> 的本地方法，<strong>创建了一个epoll对象</strong>，并返回一个非负数作为文件描述符，用于对epoll接口的所有后续调用。这个方法属于linux操作系统内核中的方法。<strong>至此Selector.open()方法解释完毕，总的来说就是创建了一个linux内核层面的Epoll对象！</strong> <img src="https://cdn.jsdelivr.net/gh/yuyujson/cdn-images@latest/blog-images/202207151647710.png" alt="深入理解BIO、NIO、AIO线程模型_线程模型、netty_09"></p> <p><strong>2.3.2. serverSocket.register(selector, SelectionKey.OP_ACCEPT)</strong></p> <p>查看这个方法的源码，同样要使用LInux下的平台中的EpollSelectorProvider的register方法，核心代码如下：</p> <p><img src="https://cdn.jsdelivr.net/gh/yuyujson/cdn-images@latest/blog-images/202207151647450.png" alt="深入理解BIO、NIO、AIO线程模型_线程模型、netty_10">
+这个方法是把当前连接注册到第一步EPollSelectorImpl实例化时生成的EPollArray的集合中，此时并没有事件驱动。直到 selector.select()方法调用linux内核函数epoll_ctl</p> <p><strong>2.3.3. selector.select()</strong></p> <p>这个select方法内部会调用doselect()方法，这个方法同样要使用LInux下的平台中的EpollSelectorProvider
+<img src="https://cdn.jsdelivr.net/gh/yuyujson/cdn-images@latest/blog-images/202207151647045.png" alt="深入理解BIO、NIO、AIO线程模型_线程模型、netty_11">
+在这个poll方法中，分别调用了Linux核心函数 <strong>epoll_ctl</strong> 和 <strong>epoll_wait</strong>，下面分别解释其含义</p> <ol><li><strong>epoll_ctl：</strong> 负责真正去关联socketChannel 和 epoll实例(selector)的关系。如果客户端连接（socketChannel）有发送事件，就会把存在于EPollArray中的这个连接放入epoll实例中的就绪事件列表(rdlist)中去。
+<strong>其中这个放入就绪事件列表的操作是怎么做的呢？</strong>
+放入操作并非是java去做，每当服务端收到客户端的连接，且该链接有响应事件时，就是使用操作系统的硬中断功能把该连接放入就绪事件列表中去。后续遍历就绪事件列表中的元素即可，减少了无效遍历。</li> <li><strong>epoll_wait</strong>：监听就绪事件列表中的元素，如果没有数据则阻塞。如果有数据，则把数据放入selectedKeys中，供java代码获取元素，响应事件！</li></ol> <p><img src="https://cdn.jsdelivr.net/gh/yuyujson/cdn-images@latest/blog-images/202207151647885.png" alt="深入理解BIO、NIO、AIO线程模型_线程模型、netty_12"></p> <h3 id="nio与redis"><a href="#nio与redis" class="header-anchor">#</a> NIO与redis</h3> <div class="language- line-numbers-mode"><pre class="language-text"><code>    Redis就是典型的基于epoll的NIO线程模型(nginx也是)，epoll实例收集所有事件(连接与读写事件)，把有数据交互的连接放入就绪事件列表中，由一个服务端线程连续处理所有就绪事件列表中的命令。
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p><img src="https://cdn.jsdelivr.net/gh/yuyujson/cdn-images@latest/blog-images/202207151647827.png" alt="深入理解BIO、NIO、AIO线程模型_线程模型、netty_13">
+在ae_epoll.c源码中也发现有 <strong>epoll_create</strong>、<strong>epoll_ctl</strong> 和 <strong>epoll_wait</strong>，原理与上文讲的类似</p> <p><strong>问题一：为什么 redis 不建议用 bigkey？</strong></p> <div class="language- line-numbers-mode"><pre class="language-text"><code>    bigkey的big体现在单个value值很大，一般认为超过10KB就是bigkey。由于redis底层用的是NIO，多路复用一个线程，如果存在bigkey的话，这个bigkey就会占用这个线程较大的时间，导致其他连接的数据交互阻塞，所以不建议使用bigkey。注意：这里说的阻塞并不是 异步非阻塞的阻塞。
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>3. AIO</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>    AIO自JDK1.7以后才开始支持，是异步非阻塞的，客户端与服务端的连接(accept)、数据读写(read、write)不再由main线程去执行，而是开辟一个回调函数，**当客户端与服务端建立连接时，把这个客户端的连接传入回调函数中，由服务端启动一个子线程去处理**，这就完成了异步操作！适用于连接数较多且连接时间较长的应用。
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p><strong>AIO与BIO、NIO的不同之处在于：</strong></p> <ol><li>AIO是 <strong>异步非阻塞</strong>模型</li> <li>NIO是 <strong>同步非阻塞</strong>模型</li> <li>BIO是 <strong>同步阻塞</strong>模型</li></ol> <p>AIO代码示例</p> <p>登录后复制</p> <div class="language-html line-numbers-mode"><pre class="language-html"><code>public class AIOServer {
+
+    public static void main(String[] args) throws Exception {
+    	//创建服务端
+        final AsynchronousServerSocketChannel serverChannel =
+                AsynchronousServerSocketChannel.open().bind(new InetSocketAddress(9000));
+
+		//使用CompletionHandler异步处理客户端连接
+        serverChannel.accept(null, new CompletionHandler<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>AsynchronousSocketChannel,</span> <span class="token attr-name">Object</span><span class="token punctuation">&gt;</span></span>() {
+            @Override
+            public void completed(AsynchronousSocketChannel socketChannel, Object attachment) {
+                try {
+                    System.out.println(&quot;2--&quot;+Thread.currentThread().getName());
+
+                    // 在此接收客户端连接，如果不写这行代码后面的客户端连接连不上服务端
+                    serverChannel.accept(attachment, this);
+                    System.out.println(socketChannel.getRemoteAddress());
+                    ByteBuffer buffer = ByteBuffer.allocate(1024);
+
+                    //使用CompletionHandler异步读取数据
+                    socketChannel.read(buffer, buffer, new CompletionHandler<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Integer,</span> <span class="token attr-name">ByteBuffer</span><span class="token punctuation">&gt;</span></span>() {
+                        @Override
+                        public void completed(Integer result, ByteBuffer buffer) {
+                            System.out.println(&quot;3--&quot;+Thread.currentThread().getName());
+                            buffer.flip();
+                            System.out.println(new String(buffer.array(), 0, result));
+                            socketChannel.write(ByteBuffer.wrap(&quot;HelloClient&quot;.getBytes()));
+                        }
+
+                        @Override
+                        public void failed(Throwable exc, ByteBuffer buffer) {
+                            exc.printStackTrace();
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void failed(Throwable exc, Object attachment) {
+                exc.printStackTrace();
+            }
+        });
+
+        System.out.println(&quot;1--&quot;+Thread.currentThread().getName());
+        Thread.sleep(Integer.MAX_VALUE);
+    }
+}
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br></div></div><p><strong>AIO作为异步非阻塞模型，理论上来说应该被广泛使用，但大多数公司并没有使用AIO，而是使用了netty，为什么？</strong></p> <ol><li>首先AIO得底层实现仍使用Epoll，并没有很好的实现异步，在性能上对比NIO没有太大优势</li> <li>其次AIO的代码逻辑比较复杂，且Linux上AIO还不够成熟</li> <li>Netty在NIO上做了很多异步的封装，是异步非阻塞框架</li></ol> <p>4. BIO、NIO、AIO的对比</p> <p><img src="https://cdn.jsdelivr.net/gh/yuyujson/cdn-images@latest/blog-images/202207151647033.png" alt="深入理解BIO、NIO、AIO线程模型_线程模型、netty_14">
+一个关于<strong>同步异步</strong>与<strong>阻塞非阻塞</strong>的段子:</p> <p>老张爱喝茶，废话不说，煮开水。
+出场人物：老张，水壶两把（普通水壶，简称水壶；会响的水壶，简称响水壶）。</p> <ol><li>老张把水壶放到火上，立等水开。（同步阻塞） 老张觉得自己有点傻</li> <li>老张把水壶放到火上，去客厅看电视，时不时去厨房看看水开没有。（同步非阻塞） 老张还是觉得自己有点傻，于是变高端了，买了把会响笛的那种水壶。水开之后，能大声发出嘀~~~~的噪音。</li> <li>老张把响水壶放到火上，立等水开。（异步阻塞）老张觉得这样傻等意义不大</li> <li>老张把响水壶放到火上，去客厅看电视，水壶响之前不再去看它了，响了再去拿壶。（异步非阻塞）老张觉得自己聪明了。</li></ol> <p><strong>所谓同步异步，只是对于水壶而言。</strong></p> <ol><li>普通水壶，同步</li> <li>响水壶，异步。</li> <li>虽然都能干活，但响水壶可以在自己完工之后，提示老张水开了。这是普通水壶所不能及的。
+同步只能让调用者去轮询自己（情况2中），造成老张效率的低下。</li></ol> <p><strong>所谓阻塞非阻塞，仅仅对于老张而言。</strong></p> <ol><li>立等的老张，阻塞</li> <li>看电视的老张，非阻塞。</li></ol></div></div> <!----> <div class="page-edit"><!----> <!----> <!----></div> <div class="page-nav-wapper"><!----> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/pages/59ba3d/" class="prev">ELK统一日志解决方案</a></span> <!----></p></div></div></div> <!----></main></div> <div class="footer"><div class="icons"><a href="mailto:yuy9501@126.com" title="发邮件" target="_blank" class="iconfont icon-youjian"></a><a href="https://github.com/yuyujson" title="GitHub" target="_blank" class="iconfont icon-github"></a><a href="https://music.163.com/#/playlist?id=5381381410" title="听音乐" target="_blank" class="iconfont icon-erji"></a></div> 
+  Theme by
+  <a href="https://github.com/xugaoyi/vuepress-theme-vdoing" target="_blank" title="本站主题">Vdoing</a> 
+    | Copyright © 2018-2022
+    <span>逆光世间 | 备案号: <a href="https://beian.miit.gov.cn" target="_blank">京ICP备19016086号</a></span></div> <div class="buttons"><div title="返回顶部" class="button blur go-to-top iconfont icon-fanhuidingbu" style="display:none;"></div> <div title="去评论" class="button blur go-to-comment iconfont icon-pinglun" style="display:none;"></div> <div title="主题模式" class="button blur theme-mode-but iconfont icon-zhuti"><ul class="select-box" style="display:none;"><li class="iconfont icon-zidong">
+          跟随系统
+        </li><li class="iconfont icon-rijianmoshi">
+          浅色模式
+        </li><li class="iconfont icon-yejianmoshi">
+          深色模式
+        </li><li class="iconfont icon-yuedu">
+          阅读模式
+        </li></ul></div></div> <div class="body-bg" style="background:url() center center / cover no-repeat;opacity:0.5;"></div> <!----> <!----></div><div class="global-ui"><div></div></div></div>
+    <script src="/assets/js/app.b59d43b0.js" defer></script><script src="/assets/js/2.32a5b7d0.js" defer></script><script src="/assets/js/43.b9fcdfcb.js" defer></script>
+  </body>
+</html>
